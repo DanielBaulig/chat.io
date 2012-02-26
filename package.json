@@ -1,0 +1,27 @@
+{
+  "author": "Daniel Baulig <daniel.baulig@gmx.de> (http://www.danielbaulig.de)",
+  "name": "chat.io",
+  "description": "Simple chat module based on socket.io",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:DanielBaulig/chat.io.git"
+  },
+  "main": "lib/chat.io.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "engines": {
+    "node": ">= 0.6.x"
+  },
+  "dependencies": {
+    "socket.io": ">= 0.8.x",
+    "first": "*"
+  },
+  "devDependencies": {
+    "mocha": "0.13.0",
+    "should": "0.5.1",
+    "socket.io-client": "0.8.7"
+  },
+  "optionalDependencies": {}
+}

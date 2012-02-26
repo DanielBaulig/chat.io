@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>sio-chat example application</title>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+      html {
+        background: silver;
+      }
+      .connected {
+        background: white !important;
+      }
+      #lines {
+        width: 400px;
+        height: 300px;
+        border: inset;
+        overflow: auto;
+        background: silver;
+      }
+      #lines p {
+        margin: 1px;
+      }
+      #input {
+        width: 400px;
+        background: silver;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="lines"></div>
+    <input type="text" id="input" disabled="disabled"/>
+    <script>
+      $(function() {
+        var socket = io.connect('http://localhost:8080/chat');
+        var lines = $('#lines');
+
+        socket.on('connect', function () {
+          console.log('CON')
+          lines.addClass('connected');
+          $('#input').addClass('connected').prop('disabled', '');
+        });
+
+        socket.on('disconnect', function() {
+          console.log('DISC');
+          lines.removeClass('connected');
+          $('#input').removeClass('connected').prop('disabled', 'disabled');
+        });
+
+        socket.on('message', function (message) {
+          lines.append($('<p>').append($('<em>').text(message)));
+          lines.prop('scrollTop', lines.prop('scrollHeight'));
+        });
+        socket.on('say', function (user, message) {
+          lines.append($('<p>').append($('<b>').text(user + '> ')).append(message))
+          lines.prop('scrollTop', lines.prop('scrollHeight'));
+        });
+        socket.on('whisper', function (user, message) {
+          lines.append($('<p>').append($('<em>').text(user + ' -> ' + message)))
+          lines.prop('scrollTop', lines.prop('scrollHeight'));
+        });
+        socket.on('join', function (user) {
+          lines.append($('<p>').append($('<em>').text(user + ' joined the channel.')));
+          lines.prop('scrollTop', lines.prop('scrollHeight'));
+        });
+        socket.on('leave', function (user) {
+          lines.append($('<p>').append($('<em>').text(user + ' left the channel.')));
+          lines.prop('scrollTop', lines.prop('scrollHeight'));
+        });
+
+        $('#input').keypress(function (e) {
+          var s, c;
+          // enter key pressed?
+          if (13 === e.which) {
+            s = this.value;
+            // slash command?
+            if ('/' === s[0]) {
+              // get parameters for command
+              s = s.split(' ');
+              // remove slash from command name
+              c = s[0].slice(1);
+              // remove command name from parameters list
+              s = s.slice(1);
+              switch (c) {
+                // whisper command
+                case 'w':
+                case 'whisper':
+                case 'msg':
+                  // get target user and join remaining parameters as text
+                  var target = s[0], message = s.slice(1).join(' ');
+                  socket.emit('whisper', target, message);
+                  lines.append($('<p>').append($('<em>').text(target + ' <- ' + message)))
+                  break;
+                  // join command
+                case 'j':
+                case 'join':
+                  // first parameter is channel, ignore rest
+                  var channel = s[0];
+                  socket.emit('join', channel, function (err) {
+                    if (err) return lines.append($('<p>').append($('<em>').text(err)));
+                    lines.append($('<p>').append($('<em>').text('You joined ' + channel)));
+                  });
+                  break;
+                // leave command
+                case 'l':
+                case 'leave':
+                case 'part':
+                  socket.emit('leave', function (err) {
+                    if (err) return lines.append($('<p>').append($('<em>').text(err)));
+                    lines.append($('<p>').append($('<em>').text('You joined the lobby')));
+                  });
+                  
+              }
+            } else {
+              socket.emit('say', s);
+            }
+            this.value = '';
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
