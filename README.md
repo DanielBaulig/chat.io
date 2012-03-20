@@ -4,7 +4,7 @@ chat.io is a simple socket.io based chat solution.
 
 Example:
 
-    See [example/simple-chat/](./example/simple-chat/).
+See [example/simple-chat/](./example/simple-chat/).
 
 # Installation
 
