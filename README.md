@@ -12,13 +12,13 @@ See [example/simple-chat/](./example/simple-chat/).
 
 # Features
 
-    * [Easy to use](#etu)
-    * [socket.io namespace compliant](#namespace)
-    * [Channels](#channels)
-    * [Whisper](#whisper)
-    * [Kicking](#kick)
-    * [Channel permission system](#perm)
-    * [Server messages](#servermsg)
+  * [Easy to use](#etu)
+  * [socket.io namespace compliant](#namespace)
+  * [Channels](#channels)
+  * [Whisper](#whisper)
+  * [Kicking](#kick)
+  * [Channel permission system](#perm)
+  * [Server messages](#servermsg)
 
 ## <a name="etu" /> Easy to use
 
