@@ -131,7 +131,7 @@ Server:
 
 # Documentation
 
-    For now, please see the example and the source code for additional documentation.
+For now, please see the example and the source code for additional documentation.
 
 # Tests
 
