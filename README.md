@@ -24,40 +24,49 @@ See [example/simple-chat/](./example/simple-chat/).
 
 Server:
 
+```javascript
     require('chat.io').createChat(io.sockets);
 
     var guestCounter = 0;
     io.set('authorization', function (handshake, accept) {
         return accept(null, handshake.nickname = 'Guest'+ ++guestCounter);
     });
+```
 
 Client:
 
+```javascript
     var socket = io.connect('http://localhost');
 
     socket.on('say', function (user, message) {
         messages.append(user+'> '+message);
     });
+```
 
 ## <a name="namespace" />socket.io namespace compliant
 
 Server:
 
+```javascript
     require('chat.io').createChat(io.of('/chat'));
 
     var guestCounter = 0;
     io.of('/chat').authorization(function (handshake, accept) {
         return accept(null, handshake.nickname = 'Guest'+ ++guestCounter);
     });
+```
 
 Client:
     
+```javascript
     var socket = io.connect('http://localhost/chat');
+```
 
 ## <a name="channels" />Channels
 
 Client:
 
+```javascript
     // beeing notified
     socket.on('join', function (user) {
         message.append(user + ' joined your channel.');
@@ -67,11 +76,13 @@ Client:
     socket.emit('join', 'aChannel', function (err) {
         if (err) messages.append('Error joining aChannel: ' + err);
     });
+```
 
 ## <a name="whisper" />Whisper
 
 Client:
 
+```javascript
     // receiving
     socket.on('whisper', function (user, message) {
         messages.append('<i>from '+user+'> '+message+'</i>');
@@ -81,21 +92,25 @@ Client:
     socket.emit('whisper', 'aUser', 'Hello, aUser!', function (err) {
         if (err) messages.append('Error whipering aUser: '+err);
     });
+```
 
 ## <a name="kick" />Kicking
 
 Server:
 
+```javascript
     chat.on('connection', function (nickname) {
         if ('badyGuy' === nickname)  {
             chat.kick(nickname);
         }
     });
+```
 
 ## <a name="perm" />Channel permission system
 
 Server:
 
+```javascript
     // deactivate channel switching
     chat.set('channel join permission', false);
 
@@ -109,17 +124,21 @@ Server:
         }
         return allow(true);
     });
+```
 
 ## <a href="servermsg" />Server messages
 
 Client:
 
+```javascript
     socket.on('message', function (message) {
         messages.append(message);
     });
+```
 
 Server:
 
+```javascript
     // global messages
     chat.sendSystem('Server shutting down in 10 minutes.');
 
@@ -128,6 +147,7 @@ Server:
 
     // user messages
     chat.sendUser(aUser, 'This is your first visit, please read the guidelines.');
+```
 
 # Documentation
 
