@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/DanielBaulig/chat.io.png)](http://travis-ci.org/DanielBaulig/chat.io)
 # _chat.io_
 
 chat.io is a simple socket.io based chat solution.
