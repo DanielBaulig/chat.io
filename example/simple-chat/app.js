@@ -4,7 +4,8 @@ var sio
   , chat
   , counter = 1
   , express = require('express')
-  , app = express.createServer();
+  , http = require('http')
+  , app = express();
 
 app.configure(function () {
   app.use(express['static'](__dirname + '/public'));
@@ -15,8 +16,8 @@ app.get('/', function (req, res) {
 });
 
 
-app.listen(8080);
-sio = require('socket.io').listen(app);
+server = http.createServer(app);
+sio = require('socket.io').listen(server);
 chat = require('../../lib/chat.io').createChat(sio.of('/chat'));
 
 sio.configure(function () {
@@ -25,3 +26,5 @@ sio.configure(function () {
     callback(null, true);
   });
 });
+
+server.listen(8080);
